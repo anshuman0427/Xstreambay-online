@@ -1,0 +1,13 @@
+{
+  "name": "xstreambay-app",
+  "version": "1.0.0",
+  "description": "XstreamBay - White-Label Engineering & Technology Solutions Platform",
+  "scripts": {
+    "dev": "npx serve -l 3000 .",
+    "start": "npx serve -l 3000 ."
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}

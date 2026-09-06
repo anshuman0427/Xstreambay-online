@@ -1,0 +1,2469 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta name="referrer" content="no-referrer">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XstreamBay - White-Label Engineering & Technology Solutions</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+    
+    <!-- Tailwind CSS with CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    primary: "#000000",
+                    "on-primary": "#ffffff",
+                    "primary-container": "#121c2a",
+                    "on-primary-container": "#7a8496",
+                    secondary: "#4d5f7a",
+                    "on-secondary": "#ffffff",
+                    "secondary-container": "#cbdefd",
+                    "on-secondary-container": "#50627c",
+                    tertiary: "#000000",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#2b170c",
+                    "on-tertiary-container": "#9d7d6e",
+                    background: "#fbf8fa",
+                    "on-background": "#1b1b1d",
+                    surface: "#fbf8fa",
+                    "on-surface": "#1b1b1d",
+                    "surface-variant": "#e4e2e3",
+                    "on-surface-variant": "#45474c",
+                    "border-subtle": "#E5E7EB",
+                    "signal-line": "#FF4D2D",
+                    "action-accent": "#FF4D2D",
+                    "surface-neutral": "#F2F4F7",
+                    outline: "#75777d",
+                    "outline-variant": "#c5c6cc"
+                },
+                borderRadius: {
+                    DEFAULT: "9999px",
+                    lg: "0.5rem",
+                    xl: "0.75rem",
+                    full: "9999px"
+                },
+                spacing: {
+                    gutter: "24px",
+                    "section-gap": "120px",
+                    "element-gap": "32px",
+                    "margin-mobile": "24px",
+                    "margin-desktop": "80px"
+                },
+                fontFamily: {
+                    headline: ["Plus Jakarta Sans", "sans-serif"],
+                    display: ["Plus Jakarta Sans", "sans-serif"],
+                    body: ["Plus Jakarta Sans", "sans-serif"],
+                    label: ["Plus Jakarta Sans", "sans-serif"],
+                    poppins: ["Poppins", "sans-serif"]
+                },
+                fontSize: {
+                    "display-hero": ["72px", {lineHeight: "1.05", letterSpacing: "-0.04em", fontWeight: "400"}],
+                    "display-hero-mobile": ["40px", {lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "400"}],
+                    "headline-lg": ["44px", {lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "400"}],
+                    "headline-md": ["28px", {lineHeight: "1.3", letterSpacing: "-0.01em", fontWeight: "400"}],
+                    "body-lg": ["18px", {lineHeight: "1.6", fontWeight: "400"}],
+                    "body-md": ["16px", {lineHeight: "1.5", fontWeight: "400"}],
+                    "label-caps": ["12px", {lineHeight: "1", letterSpacing: "0.1em", fontWeight: "400"}],
+                    metadata: ["11px", {lineHeight: "1.4", letterSpacing: "0.05em", fontWeight: "400"}]
+                }
+            }
+        }
+    };
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Poppins', 'Plus Jakarta Sans', sans-serif;
+            background-color: #fbf8fa;
+            color: #1b1b1d;
+            overflow-x: hidden;
+        }
+        .text-accent-red { color: #FF4D2D; }
+        .bg-studio-dark { background-color: #121c2a; }
+        
+        .signal-node {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #FF4D2D;
+            display: inline-block;
+        }
+        .signal-line-horizontal {
+            height: 1px;
+            background-color: #FF4D2D;
+            width: 100%;
+        }
+        .signal-line-vertical {
+            width: 1px;
+            background-color: #FF4D2D;
+            position: absolute;
+            height: 100%;
+        }
+        
+        .ghost-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #E5E7EB;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+            transition: all 0.2s ease;
+        }
+        .ghost-input:focus {
+            box-shadow: none;
+            outline: none;
+            border-bottom-color: #FF4D2D;
+        }
+        .ghost-input:focus + .input-node {
+            opacity: 1;
+        }
+        .input-node {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(229, 231, 235, 0.8);
+        }
+        
+        .nav-link {
+            position: relative;
+            cursor: pointer;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #FF4D2D;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link.active {
+            color: #000000;
+            font-weight: 600;
+        }
+        
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        }
+        
+        .signal-bg {
+            background-image: 
+                linear-gradient(to right, rgba(229, 231, 235, 0.5) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(229, 231, 235, 0.5) 1px, transparent 1px);
+            background-size: 80px 80px;
+        }
+        
+        .editorial-border {
+            border: 1px solid #E5E7EB;
+        }
+        
+        
+        /* FULLY ROUNDED PILL BUTTONS (CAPSULE SHAPE) */
+        button, a.bg-primary, a.bg-signal-line, a.border, input[type="submit"], input[type="button"], .nav-btn {
+            border-radius: 9999px !important;
+        }
+        .cat-pill {
+            border-radius: 9999px !important;
+        }
+
+        /* Modal Backdrop Fade */
+        .modal-backdrop {
+            background: rgba(18, 28, 42, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    
+        /* MINIMALIST ULTRA-CLEAN WHITE DESIGN SYSTEM */
+        /* NORMAL WEIGHT TYPOGRAPHY OVERRIDE FOR ALL HEADINGS */
+        h1, h2, h3, h4, h5, h6,
+        .font-display-hero, .font-headline-lg, .font-headline-md,
+        .font-extrabold, .font-bold {
+            font-weight: 400 !important;
+        }
+        .font-semibold {
+            font-weight: 500 !important;
+        }
+
+        body {
+            background-color: #ffffff !important;
+            background-image: radial-gradient(at 50% 0%, rgba(248, 250, 252, 1) 0px, transparent 70%) !important;
+            color: #0f172a !important;
+        }
+
+        .glass-card {
+            background: #ffffff !important;
+            border: 1px solid #f1f5f9 !important;
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.03) !important;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .glass-card:hover {
+            transform: translateY(-4px) !important;
+            border-color: rgba(255, 77, 45, 0.3) !important;
+            box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.08) !important;
+        }
+        
+        .glass-card-dark {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+            border: 1px solid #334155 !important;
+            box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.25) !important;
+            transition: all 0.3s ease !important;
+        }
+        .glass-card-dark:hover {
+            border-color: rgba(255, 77, 45, 0.5) !important;
+            box-shadow: 0 24px 50px -10px rgba(15, 23, 42, 0.35) !important;
+        }
+
+        .contact-input {
+            background: #ffffff !important;
+            border: 1.5px solid #e2e8f0 !important;
+            color: #0f172a !important;
+            font-weight: 600 !important;
+            font-size: 0.95rem !important;
+            padding: 0.875rem 1.25rem !important;
+            border-radius: 9999px !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+            transition: all 0.2s ease !important;
+        }
+        .contact-input:focus {
+            border-color: #ff4d2d !important;
+            box-shadow: 0 0 0 3px rgba(255, 77, 45, 0.12) !important;
+            outline: none !important;
+        }
+        .contact-input::placeholder {
+            color: #94a3b8 !important;
+            font-weight: 400 !important;
+        }
+        
+        .glass-panel {
+            background: #ffffff !important;
+            border: 1px solid #f1f5f9 !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02) !important;
+        }
+        
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.92) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02) !important;
+        }
+
+        .glass-dropdown {
+            background: #ffffff !important;
+            border: 1px solid #f1f5f9 !important;
+            box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.08) !important;
+        }
+
+        .glass-modal {
+            background: #ffffff !important;
+            border: 1px solid #f1f5f9 !important;
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15) !important;
+        }
+
+        .glass-drawer {
+            background: #ffffff !important;
+            border-left: 1px solid #f1f5f9 !important;
+        }
+
+        .glass-pill {
+            background: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+            color: #334155 !important;
+        }
+
+        .glass-input {
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            transition: all 0.25s ease !important;
+        }
+        .glass-input:focus {
+            border-color: #FF4D2D !important;
+            box-shadow: 0 0 0 3px rgba(255, 77, 45, 0.12) !important;
+        }
+
+        /* ================================================
+           MOBILE RESPONSIVENESS & TOUCH OPTIMIZATIONS
+        ================================================ */
+
+        /* Prevent any horizontal overflow globally */
+        html, body {
+            overflow-x: hidden !important;
+            max-width: 100vw;
+        }
+
+        /* Sub-page hero banners: remove the desktop bleed margin on mobile */
+        @media (max-width: 767px) {
+            .subpage-hero-banner {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                width: 100% !important;
+                height: 420px !important;
+                border-radius: 1.5rem !important;
+            }
+            /* Reflow hero content to fill left side on mobile */
+            .subpage-hero-banner .hero-content-side {
+                justify-content: flex-start !important;
+                padding-left: 1.25rem !important;
+                padding-right: 1.25rem !important;
+            }
+            /* Make banner gradient a bottom-fade on mobile */
+            .subpage-hero-banner .hero-gradient {
+                background: linear-gradient(to top, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.7) 45%, rgba(255,255,255,0) 75%) !important;
+            }
+            .subpage-hero-banner .hero-content-inner {
+                max-width: 100% !important;
+            }
+        }
+
+        /* Value strip: remove dividers on mobile grid */
+        @media (max-width: 767px) {
+            .value-strip-item {
+                padding-left: 0 !important;
+                border-left: none !important;
+            }
+        }
+
+        /* Hero section: floating stats badges */
+        @media (max-width: 480px) {
+            .hero-stats-strip {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .hero-stats-strip > div {
+                padding: 0.5rem 0.75rem;
+            }
+            .hero-live-pill {
+                display: none !important;
+            }
+        }
+
+        /* Hero image: reduce height on mobile */
+        @media (max-width: 1023px) {
+            .hero-image-container {
+                height: 300px !important;
+            }
+        }
+        @media (max-width: 640px) {
+            .hero-image-container {
+                height: 240px !important;
+            }
+        }
+
+        /* WhatsApp floating button: icon-only on small screens */
+        @media (max-width: 640px) {
+            .wa-floating-label {
+                display: none !important;
+            }
+            .wa-floating-btn {
+                padding: 0.75rem !important;
+                border-radius: 50% !important;
+            }
+        }
+
+        /* Contact form: reduce padding on mobile */
+        @media (max-width: 640px) {
+            .contact-form-card {
+                padding: 1.5rem !important;
+            }
+            .contact-sidebar-card {
+                padding: 1.5rem !important;
+            }
+        }
+
+        /* Capabilities grid: ensure equal borders on mobile */
+        @media (max-width: 767px) {
+            .capabilities-grid > div {
+                min-height: auto !important;
+            }
+        }
+
+        /* Touch targets: minimum 44x44px for interactive elements */
+        @media (max-width: 1023px) {
+            button, a[href], select, input[type="submit"] {
+                min-height: 44px;
+            }
+            nav a {
+                min-height: unset;
+            }
+        }
+
+        /* Modal: full-width on mobile */
+        @media (max-width: 640px) {
+            .glass-modal, .glass-panel {
+                border-radius: 1rem !important;
+            }
+            #search-modal > div {
+                border-radius: 1rem !important;
+                margin: 0 0.5rem;
+            }
+            #product-modal > div {
+                max-height: 95vh !important;
+                border-radius: 1rem !important;
+                margin: 0.5rem;
+            }
+            #confirmation-modal > div {
+                border-radius: 1rem !important;
+                padding: 1.5rem !important;
+            }
+        }
+
+        /* Footer: stack columns on mobile */
+        @media (max-width: 767px) {
+            .footer-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 2rem !important;
+            }
+            .footer-brand-col {
+                grid-column: 1 / -1 !important;
+            }
+        }
+
+        /* Capabilities grid: 2 cols on tablet */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .capabilities-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+
+        /* Section gaps: tighter on mobile */
+        @media (max-width: 767px) {
+            .mobile-section-py {
+                padding-top: 3.5rem !important;
+                padding-bottom: 3.5rem !important;
+            }
+            .mobile-heading-sm h1,
+            .mobile-heading-sm h2 {
+                font-size: clamp(1.75rem, 5vw, 2.5rem) !important;
+                line-height: 1.15 !important;
+            }
+        }
+
+        /* Prevent long words breaking layout */
+        p, li, h1, h2, h3, h4, h5 {
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
+        /* Smooth scroll for anchor navigation */
+        html {
+            scroll-behavior: smooth;
+        }
+
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col selection:bg-action-accent selection:text-white">
+
+    <!-- GLOBAL NAVBAR -->
+    <header class="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
+        <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-[1280px] mx-auto">
+            <!-- Brand Logo -->
+            <a href="#home" class="flex items-center gap-2 group">
+                <span class="text-body-lg md:text-headline-md font-bold tracking-tighter text-primary">XstreamBay</span>
+                <span class="text-[10px] font-mono tracking-widest text-white bg-black px-1.5 py-0.5 rounded-lg uppercase">Studio</span>
+            </a>
+            
+            <!-- Desktop Nav Links -->
+            <nav class="hidden lg:flex items-center space-x-8">
+                <a href="#home" class="nav-link text-body-md text-on-surface-variant hover:text-primary transition-colors" data-route="home">Home</a>
+                <a href="#services" class="nav-link text-body-md text-on-surface-variant hover:text-primary transition-colors" data-route="services">Services</a>
+                <a href="#products" class="nav-link text-body-md text-on-surface-variant hover:text-primary transition-colors" data-route="products">Products</a>
+                
+                <!-- Services Submenu Dropdown -->
+                <div class="relative group/dropdown">
+                    <button class="flex items-center gap-1 text-body-md text-on-surface-variant hover:text-primary transition-colors py-2">
+                        Capabilities <span class="material-symbols-outlined text-sm">expand_more</span>
+                    </button>
+                    <div class="absolute top-full left-0 hidden group-hover/dropdown:block w-64 glass-dropdown rounded-2xl py-2 z-50 overflow-hidden">
+                        <a href="#web-apps" class="flex items-center gap-3 px-4 py-2.5 hover:bg-white/50 transition-colors text-sm text-on-surface">
+                            <span class="material-symbols-outlined text-signal-line text-lg">code</span>
+                            <div>
+                                <div class="font-medium">Web Applications</div>
+                                <div class="text-xs text-on-surface-variant">Scalable web architecture</div>
+                            </div>
+                        </a>
+                        <a href="#ai-agents" class="flex items-center gap-3 px-4 py-2.5 hover:bg-white/50 transition-colors text-sm text-on-surface">
+                            <span class="material-symbols-outlined text-action-accent text-lg">psychology</span>
+                            <div>
+                                <div class="font-medium">AI Agents & LLMs</div>
+                                <div class="text-xs text-on-surface-variant">Cognitive workflows</div>
+                            </div>
+                        </a>
+                        <a href="#data-bi" class="flex items-center gap-3 px-4 py-2.5 hover:bg-white/50 transition-colors text-sm text-on-surface">
+                            <span class="material-symbols-outlined text-signal-line text-lg">analytics</span>
+                            <div>
+                                <div class="font-medium">Data Analytics & BI</div>
+                                <div class="text-xs text-on-surface-variant">Pipelines & BI dashboards</div>
+                            </div>
+                        </a>
+                        <a href="#automation" class="flex items-center gap-3 px-4 py-2.5 hover:bg-white/50 transition-colors text-sm text-on-surface">
+                            <span class="material-symbols-outlined text-signal-line text-lg">account_tree</span>
+                            <div>
+                                <div class="font-medium">Intelligent Automation</div>
+                                <div class="text-xs text-on-surface-variant">RPA & workflow orchestration</div>
+                            </div>
+                        </a>
+                        <a href="#mobile-dev" class="flex items-center gap-3 px-4 py-2.5 hover:bg-white/50 transition-colors text-sm text-on-surface">
+                            <span class="material-symbols-outlined text-signal-line text-lg">smartphone</span>
+                            <div>
+                                <div class="font-medium">Mobile Development</div>
+                                <div class="text-xs text-on-surface-variant">Native & cross-platform</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <a href="#contact" class="nav-link text-body-md text-on-surface-variant hover:text-primary transition-colors" data-route="contact">Contact</a>
+            </nav>
+            
+            <!-- Right Nav Actions -->
+            <div class="flex items-center gap-3">
+                <a href="#contact" class="hidden md:inline-flex items-center gap-2 bg-primary text-on-primary font-body-md text-body-md font-semibold px-5 py-2 rounded-full hover:bg-primary/90 transition-opacity">
+                    Book a Partner Call
+                </a>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden text-primary p-1 hover:bg-surface-container rounded-full">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div id="mobile-drawer" class="fixed inset-0 z-50 hidden bg-primary-container/60 backdrop-blur-sm transition-opacity">
+        <div class="fixed right-0 top-0 h-full w-4/5 max-w-sm glass-drawer shadow-2xl p-6 flex flex-col justify-between">
+            <div>
+                <div class="flex justify-between items-center pb-6 border-b border-border-subtle">
+                    <a href="#home" class="text-xl font-bold tracking-tighter text-primary">XstreamBay</a>
+                    <button id="close-drawer-btn" class="text-primary p-1">
+                        <span class="material-symbols-outlined text-2xl">close</span>
+                    </button>
+                </div>
+                <nav class="flex flex-col space-y-4 pt-6">
+                    <a href="#home" class="mobile-nav-item text-lg font-medium text-on-surface hover:text-signal-line">Home</a>
+                    <a href="#services" class="mobile-nav-item text-lg font-medium text-on-surface hover:text-signal-line">Services Overview</a>
+                    <a href="#products" class="mobile-nav-item text-lg font-medium text-on-surface hover:text-signal-line">White-Label Products</a>
+                    <div class="pl-4 space-y-3 border-l-2 border-border-subtle py-2">
+                        <a href="#web-apps" class="mobile-nav-item block text-sm text-on-surface-variant hover:text-primary">Web Applications</a>
+                        <a href="#ai-agents" class="mobile-nav-item block text-sm text-on-surface-variant hover:text-primary">AI Agents & LLMs</a>
+                        <a href="#data-bi" class="mobile-nav-item block text-sm text-on-surface-variant hover:text-primary">Data Analytics & BI</a>
+                        <a href="#automation" class="mobile-nav-item block text-sm text-on-surface-variant hover:text-primary">Intelligent Automation</a>
+                        <a href="#mobile-dev" class="mobile-nav-item block text-sm text-on-surface-variant hover:text-primary">Mobile Development</a>
+                    </div>
+                    <a href="#contact" class="mobile-nav-item text-lg font-medium text-on-surface hover:text-signal-line">Contact / Partner Inquiry</a>
+                </nav>
+            </div>
+            <div class="pt-6 border-t border-border-subtle">
+                <a href="#contact" class="mobile-nav-item w-full block text-center bg-primary text-on-primary font-semibold py-3 rounded-full">
+                    Book a Partner Call
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN PAGE VIEWS CONTAINER -->
+    <div id="views-container" class="flex-grow">
+        
+    <!-- PAGE VIEW: home -->
+    <div id="page-home" class="page-view" style="display:none">
+        <main class="flex-grow w-full">
+
+            <!-- Hero Section -->
+            <section class="w-full pt-28 pb-section-gap relative">
+                <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-2 gap-element-gap items-center">
+
+                    <!-- Left: Headline & CTA -->
+                    <div class="flex flex-col gap-8">
+                        <div class="flex items-center gap-4 text-label-caps font-label-caps text-on-surface-variant tracking-widest uppercase">
+                            <span class="material-symbols-outlined text-[16px] text-action-accent">radio_button_checked</span>
+                            White-Label Engineering Partner
+                        </div>
+                        <h1 class="text-display-hero-mobile md:text-display-hero font-display-hero text-primary tracking-tighter leading-tight">
+                            You Focus on <span class="text-accent-red italic pr-2">Sales</span>.<br/>
+                            We Handle <span class="text-accent-red italic pr-2">Engineering</span>.
+                        </h1>
+                        <p class="text-body-lg font-body-lg text-on-surface-variant max-w-xl">
+                            Instantly expand your agency's engineering capacity. We deploy dedicated senior developer pods, AI cognitive workflows, and white-label web &amp; mobile platforms — 100% under your brand with zero attribution.
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="#contact" class="bg-primary text-on-primary px-8 py-4 rounded-full font-label-caps text-label-caps tracking-widest inline-flex items-center gap-2 hover:bg-on-surface-variant transition-colors group">
+                                BECOME A PARTNER
+                                <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Right: Hero Photo -->
+                    <div class="relative rounded-3xl overflow-hidden group">
+                        <img
+                            src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=1200&h=900&dpr=2"
+                            alt="XstreamBay engineering team collaborating"
+                            class="hero-image-container w-full h-[520px] object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                        />
+                        <!-- Dark gradient overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
+
+                        <!-- Bottom floating badge strip -->
+                        <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 flex items-end justify-between">
+                            <div class="hero-stats-strip flex gap-2 md:gap-4 flex-wrap">
+                                <div class="bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 md:px-4 md:py-3">
+                                    <div class="text-lg md:text-xl font-light text-slate-900">120+</div>
+                                    <div class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-wider mt-0.5">Engineers</div>
+                                </div>
+                                <div class="bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 md:px-4 md:py-3">
+                                    <div class="text-lg md:text-xl font-light text-slate-900">100%</div>
+                                    <div class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-wider mt-0.5">IP Yours</div>
+                                </div>
+                                <div class="bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 md:px-4 md:py-3">
+                                    <div class="text-lg md:text-xl font-light text-slate-900">&lt;4h</div>
+                                    <div class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-wider mt-0.5">Response</div>
+                                </div>
+                            </div>
+                            <!-- Live pill -->
+                            <div class="hero-live-pill flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-3 py-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span class="text-[10px] font-mono text-slate-600 uppercase tracking-wider">Accepting Partners</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+
+<!-- Value Strip -->
+<section class="border-y border-white/80 glass-panel">
+<div class="px-margin-mobile md:px-margin-desktop py-8 max-w-[1280px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 md:divide-x md:divide-border-subtle">
+<div class="value-strip-item flex items-center justify-center gap-3">
+<span class="material-symbols-outlined text-action-accent">trending_up</span>
+<span class="text-label-caps font-label-caps tracking-widest">SELL MORE</span>
+</div>
+<div class="value-strip-item flex items-center justify-center gap-3 md:pl-8">
+<span class="material-symbols-outlined text-action-accent">group_remove</span>
+<span class="text-label-caps font-label-caps tracking-widest">HIRE LESS</span>
+</div>
+<div class="value-strip-item flex items-center justify-center gap-3 md:pl-8">
+<span class="material-symbols-outlined text-action-accent">speed</span>
+<span class="text-label-caps font-label-caps tracking-widest">DELIVER FASTER</span>
+</div>
+<div class="value-strip-item flex items-center justify-center gap-3 md:pl-8">
+<span class="material-symbols-outlined text-action-accent">handshake</span>
+<span class="text-label-caps font-label-caps tracking-widest">STAY CLIENT-FACING</span>
+</div>
+</div>
+</section>
+<!-- Capabilities Grid -->
+<section class="px-margin-mobile md:px-margin-desktop py-section-gap max-w-[1280px] mx-auto">
+<div class="flex items-center gap-4 text-label-caps font-label-caps text-on-surface-variant tracking-widest uppercase mb-16">
+<div class="w-8 h-[1px] bg-border-subtle"></div>
+                 01 / CAPABILITIES
+             </div>
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<h2 class="text-headline-lg font-headline-lg text-primary tracking-tighter max-w-2xl">
+                     Engineering capacity for ambitious consultancies.
+                 </h2>
+</div>
+<div class="capabilities-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border border-border-subtle border-b-0 border-r-0">
+<!-- Card 1 -->
+<div class="p-8 border-b border-r border-border-subtle hover:bg-surface-bright transition-colors group flex flex-col justify-between min-h-[320px]">
+<div class="flex justify-between items-start">
+<span class="text-metadata font-metadata text-action-accent tracking-widest">AI / 01</span>
+<span class="material-symbols-outlined text-border-subtle group-hover:text-primary transition-colors">smart_toy</span>
+</div>
+<div>
+<h3 class="text-headline-md font-headline-md text-primary mb-4">AI &amp; Automation</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6 line-clamp-3">
+                             Turn repetitive work into dependable, human-supervised workflows that understand context.
+                         </p>
+<div class="text-metadata font-metadata text-on-surface-variant tracking-widest uppercase flex gap-3">
+<span>AGENTS</span> <span class="text-border-subtle">•</span> <span>RAG</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-8 border-b border-r border-border-subtle hover:bg-surface-bright transition-colors group flex flex-col justify-between min-h-[320px]">
+<div class="flex justify-between items-start">
+<span class="text-metadata font-metadata text-action-accent tracking-widest">ENG / 02</span>
+<span class="material-symbols-outlined text-border-subtle group-hover:text-primary transition-colors">code</span>
+</div>
+<div>
+<h3 class="text-headline-md font-headline-md text-primary mb-4">Software Eng</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6 line-clamp-3">
+                             Purpose-built portals, SaaS platforms, and internal tools for operations that off-the-shelf software cannot fit.
+                         </p>
+<div class="text-metadata font-metadata text-on-surface-variant tracking-widest uppercase flex gap-3">
+<span>REACT</span> <span class="text-border-subtle">•</span> <span>NODE</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="p-8 border-b border-r border-border-subtle hover:bg-surface-bright transition-colors group flex flex-col justify-between min-h-[320px]">
+<div class="flex justify-between items-start">
+<span class="text-metadata font-metadata text-action-accent tracking-widest">DAT / 03</span>
+<span class="material-symbols-outlined text-border-subtle group-hover:text-primary transition-colors">database</span>
+</div>
+<div>
+<h3 class="text-headline-md font-headline-md text-primary mb-4">Data &amp; Analytics</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6 line-clamp-3">
+                             Pipelines, dashboards, and scalable data infrastructure to make business intelligence actionable.
+                         </p>
+<div class="text-metadata font-metadata text-on-surface-variant tracking-widest uppercase flex gap-3">
+<span>PIPELINES</span> <span class="text-border-subtle">•</span> <span>BI</span>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="p-8 border-b border-r border-border-subtle hover:bg-surface-bright transition-colors group flex flex-col justify-between min-h-[320px]">
+<div class="flex justify-between items-start">
+<span class="text-metadata font-metadata text-action-accent tracking-widest">ARC / 04</span>
+<span class="material-symbols-outlined text-border-subtle group-hover:text-primary transition-colors">architecture</span>
+</div>
+<div>
+<h3 class="text-headline-md font-headline-md text-primary mb-4">Architecture</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6 line-clamp-3">
+                             Infrastructure that ships cleanly, scales calmly, stays observable, and makes reliability part of the product.
+                         </p>
+<div class="text-metadata font-metadata text-on-surface-variant tracking-widest uppercase flex gap-3">
+<span>AWS</span> <span class="text-border-subtle">•</span> <span>DEVOPS</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- White-Label Section -->
+<section class="bg-studio-dark text-on-primary py-section-gap px-margin-mobile md:px-margin-desktop overflow-hidden relative">
+<div class="max-w-[1280px] mx-auto relative z-10">
+<div class="flex items-center gap-4 text-label-caps font-label-caps text-on-primary-container tracking-widest uppercase mb-16">
+<div class="w-8 h-[1px] bg-on-primary-container/30"></div>
+                    02 / WHITE-LABEL MODEL
+                </div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div>
+<h2 class="text-display-hero-mobile md:text-headline-lg font-headline-lg tracking-tighter mb-8 leading-tight">
+                            Your Brand Stays in Front.<br/>
+<span class="text-action-accent">We Stay Behind the Scenes.</span>
+</h2>
+<p class="text-body-lg font-body-lg text-on-primary-container mb-8 max-w-md">
+                            We operate entirely under your banner. From commit messages to client meetings, we act as an integrated extension of your in-house team.
+                        </p>
+<ul class="space-y-4 text-body-md font-body-md text-on-primary">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-action-accent text-[20px]">check_circle</span>
+                                Dedicated Slack/Teams channels
+                            </li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-action-accent text-[20px]">check_circle</span>
+                                Your email domains (@youragency.com)
+                            </li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-action-accent text-[20px]">check_circle</span>
+                                Strict NDA &amp; Non-Compete agreements
+                            </li>
+</ul>
+</div>
+<div class="relative h-[400px] border border-on-primary-fixed-variant/30 rounded-lg bg-[#0a0f18] p-8 flex flex-col justify-center">
+<!-- Abstract Flow Visual -->
+<div class="flex items-center justify-between relative z-10">
+<div class="w-24 h-24 rounded-lg-full border border-action-accent flex items-center justify-center bg-action-accent/10">
+<span class="text-metadata font-metadata tracking-widest text-action-accent">YOUR AGENCY</span>
+</div>
+<div class="flex-grow border-t border-dashed border-on-primary-container/50 mx-4 relative">
+<div class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#0a0f18] px-2 text-metadata font-metadata text-on-primary-container">SEAMLESS DELIVERY</div>
+</div>
+<div class="w-24 h-24 rounded-lg-full border border-on-primary-container flex items-center justify-center bg-surface-tint/20">
+<span class="text-metadata font-metadata tracking-widest text-on-primary-container">CLIENT</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Ambient Background Shader -->
+</section>
+<!-- Final CTA -->
+<section class="px-margin-mobile md:px-margin-desktop py-section-gap max-w-[1280px] mx-auto text-center">
+<h2 class="text-display-hero-mobile md:text-headline-lg font-headline-lg text-primary tracking-tighter mb-8 max-w-4xl mx-auto">
+                Your Next Client Project Could Be <span class="italic text-action-accent">Bigger</span> Than Your Team.
+            </h2>
+<a href="#contact" class="bg-primary text-on-primary px-10 py-5 rounded-full font-label-caps text-label-caps tracking-widest inline-flex items-center gap-3 hover:bg-action-accent transition-colors group">
+                START A PARTNERSHIP CONVERSATION
+                <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">east</span>
+</a>
+</section>
+        </main>
+    </div>
+
+    <!-- PAGE VIEW: contact -->
+    <div id="page-contact" class="page-view" style="display:none">
+        <main class="flex-grow w-full">
+            <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop pt-24 pb-20">
+                <!-- Hero Section -->
+                <div class="mb-12 max-w-3xl">
+                    <div class="flex items-center gap-3 text-xs font-mono text-action-accent uppercase tracking-widest mb-4">
+                        <span class="w-8 h-[1px] bg-action-accent"></span>
+                        01 // PARTNERSHIP INQUIRY
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-normal text-slate-900 tracking-tight leading-tight mb-4">
+                        Start Your Next Engineering Partnership with <span class="text-action-accent italic">XstreamBay</span>.
+                    </h1>
+                    <p class="text-lg text-slate-600 font-normal leading-relaxed">
+                        Ready to scale your agency's delivery velocity? Tell us about your upcoming software project, or reach out directly on WhatsApp for instant engineering pod deputation.
+                    </p>
+                </div>
+
+                <!-- Contact Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Lead Capture Form -->
+                    <div class="contact-form-card lg:col-span-7 glass-card p-6 md:p-12 border border-slate-100 relative rounded-3xl">
+                        <div class="absolute top-6 right-6">
+                            <span class="font-mono text-xs font-medium text-action-accent tracking-wider">SYS / FORM / 01</span>
+                        </div>
+                        <form id="contact-form" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="text-xs font-mono font-medium tracking-wider text-slate-700 uppercase block mb-2" for="name">FULL NAME *</label>
+                                    <input class="w-full contact-input" id="name" placeholder="John Doe" type="text" required />
+                                </div>
+                                <div>
+                                    <label class="text-xs font-mono font-medium tracking-wider text-slate-700 uppercase block mb-2" for="email">WORK EMAIL *</label>
+                                    <input class="w-full contact-input" id="email" placeholder="john@company.com" type="email" required />
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="text-xs font-mono font-medium tracking-wider text-slate-700 uppercase block mb-2" for="company">COMPANY NAME</label>
+                                    <input class="w-full contact-input" id="company" placeholder="Acme Software Corp" type="text" />
+                                </div>
+                                <div>
+                                    <label class="text-xs font-mono font-medium tracking-wider text-slate-700 uppercase block mb-2" for="phone">PHONE NUMBER *</label>
+                                    <input class="w-full contact-input" id="phone" placeholder="+91 98765 43210" type="tel" required />
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="md:col-span-2">
+                                    <label class="text-xs font-mono font-medium tracking-wider text-slate-700 uppercase block mb-2" for="website">WEBSITE URL</label>
+                                    <input class="w-full contact-input" id="website" placeholder="https://example.com" type="url" />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-xs font-mono font-medium tracking-wider text-slate-700 uppercase block mb-2" for="service">CAPABILITY / SERVICE NEEDED</label>
+                                <select class="w-full contact-input cursor-pointer" id="service">
+                                    <option class="text-slate-900 bg-white">White-Label Web Applications & SaaS</option>
+                                    <option class="text-slate-900 bg-white">Autonomous AI Agents & RAG Systems</option>
+                                    <option class="text-slate-900 bg-white">Data Engineering & Analytics BI</option>
+                                    <option class="text-slate-900 bg-white">Intelligent Workflow Automation</option>
+                                    <option class="text-slate-900 bg-white">Cross-Platform & Native Mobile Dev</option>
+                                    <option class="text-slate-900 bg-white">Dedicated Engineering Pod Deputation</option>
+                                    <option class="text-slate-900 bg-white">Ready White-Label Products (15 Ready Apps)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs font-mono font-medium tracking-wider text-slate-700 uppercase block mb-2" for="message">PROJECT BRIEF / MESSAGING *</label>
+                                <textarea class="w-full contact-input resize-none" id="message" placeholder="Describe your technical requirements, timeline, or team scaling goals..." rows="4" required></textarea>
+                            </div>
+                            
+                            <div id="contact-success-msg" class="hidden p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-800 text-sm font-medium">
+                                ✓ Thank you! Your partnership inquiry has been received. Our lead architect will respond within 4 hours.
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-8">
+                                <button class="bg-action-accent hover:bg-orange-600 text-white font-medium text-sm px-8 py-4 rounded-full flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer" type="submit">
+                                    Send Partnership Message
+                                    <span class="material-symbols-outlined text-base">arrow_forward</span>
+                                </button>
+                                <a href="https://wa.me/918957276641?text=Hello%20XstreamBay%20Team%2C%20I%20would%20like%20to%20discuss%20a%20white-label%20engineering%20partnership." target="_blank" rel="noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm px-6 py-4 rounded-full inline-flex items-center justify-center gap-2 shadow-md transition-all">
+                                    <span class="material-symbols-outlined text-base">chat</span>
+                                    WhatsApp: +91 8957276641
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Context & Trust Sidebar -->
+                    <div class="contact-sidebar-card lg:col-span-5 glass-card-dark p-6 md:p-12 flex flex-col justify-between rounded-3xl text-white">
+                        <div>
+                            <span class="glass-pill px-3 py-1 rounded-full text-xs font-mono font-medium text-orange-400 mb-4 inline-block">4-HOUR SLA RESPONSE</span>
+                            <h3 class="text-2xl font-normal text-white mb-8 tracking-tight">What Happens Next.</h3>
+                            
+                            <div class="space-y-6 relative">
+                                <div class="absolute left-[7px] top-2 bottom-2 w-px bg-white/15"></div>
+                                <div class="flex gap-6 relative z-10">
+                                    <div class="w-4 h-4 rounded-full bg-action-accent mt-1 shrink-0 flex items-center justify-center border-2 border-white shadow-[0_0_10px_rgba(255,77,45,0.6)]"></div>
+                                    <div>
+                                        <h4 class="font-normal text-white text-base mb-1">1. Technical Discovery Call</h4>
+                                        <p class="text-xs text-slate-300 leading-relaxed">A 30-minute technical alignment to review your immediate agency scaling requirements.</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-6 relative z-10">
+                                    <div class="w-4 h-4 rounded-full bg-slate-700 mt-1 shrink-0 border border-slate-500"></div>
+                                    <div>
+                                        <h4 class="font-normal text-slate-200 text-base mb-1">2. Architecture Scoping</h4>
+                                        <p class="text-xs text-slate-400 leading-relaxed">Defining pod composition, tech stack, sprint timelines, and fixed SLA milestones.</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-6 relative z-10">
+                                    <div class="w-4 h-4 rounded-full bg-slate-700 mt-1 shrink-0 border border-slate-500"></div>
+                                    <div>
+                                        <h4 class="font-normal text-slate-200 text-base mb-1">3. Team Matching & NDA</h4>
+                                        <p class="text-xs text-slate-400 leading-relaxed">Assigning senior engineers with domain expertise to your Jira and Slack workspace under NDA.</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-6 relative z-10">
+                                    <div class="w-4 h-4 rounded-full bg-slate-700 mt-1 shrink-0 border border-slate-500"></div>
+                                    <div>
+                                        <h4 class="font-normal text-slate-200 text-base mb-1">4. Delivery Kickoff</h4>
+                                        <p class="text-xs text-slate-400 leading-relaxed">Integration into your workflows with zero client attribution and immediate sprint execution.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-10 pt-8 border-t border-white/10">
+                            <h4 class="font-mono text-xs font-medium text-action-accent tracking-widest uppercase mb-4">THE XSTREAMBAY GUARANTEE</h4>
+                            <ul class="space-y-3 text-sm text-slate-300 font-normal">
+                                <li class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-action-accent text-lg">verified_user</span>
+                                    <span>Strict NDAs signed upfront</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-action-accent text-lg">visibility_off</span>
+                                    <span>100% White-label white-glove delivery</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-action-accent text-lg">chat</span>
+                                    <span>Direct WhatsApp Support: +91 8957276641</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+
+    <!-- PAGE VIEW: web-apps -->
+    <div id="page-web-apps" class="page-view" style="display:none">
+        <main class="flex-grow w-full">
+            <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop pt-24 pb-20">
+                <!-- Hero Banner -->
+                <section class="subpage-hero-banner relative w-full rounded-3xl overflow-hidden mb-16 md:mb-16" style="height:560px;margin-left:clamp(0px, calc(-1 * var(--margin-desktop, 80px)), -80px);margin-right:clamp(0px, calc(-1 * var(--margin-desktop, 80px)), -80px);width:min(calc(100% + 160px), 100vw);">
+                    <!-- Background Image -->
+                    <img
+                        src="https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&dpr=2"
+                        alt="Web Applications Engineering"
+                        class="absolute inset-0 w-full h-full object-cover object-center"
+                    />
+                    <!-- Fade: bottom on mobile, right on desktop -->
+                    <div class="hero-gradient absolute inset-0" style="background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0.85) 60%, rgba(255,255,255,1) 80%);"></div>
+                    <!-- Content anchored to the right side (desktop) / bottom (mobile) -->
+                    <div class="hero-content-side absolute inset-0 flex items-end md:items-center justify-start md:justify-end px-5 md:px-20 pb-8 md:pb-0">
+                        <div class="hero-content-inner max-w-md flex flex-col gap-4 md:gap-5">
+                            <div class="flex items-center gap-2 text-xs font-mono text-action-accent uppercase tracking-widest">
+                                <span class="material-symbols-outlined text-base">code</span>
+                                Web Applications &amp; SaaS
+                            </div>
+                            <h1 class="text-3xl md:text-5xl font-normal text-slate-900 tracking-tight leading-tight">
+                                Scalable Web Apps &amp; <span class="text-action-accent italic">Enterprise Portals</span>.
+                            </h1>
+                            <p class="text-sm md:text-base text-slate-600 leading-relaxed">
+                                High-concurrency web architecture with Next.js 14, React, and Node.js microservices — 100% under your brand.
+                            </p>
+                            <div class="flex flex-wrap gap-3 pt-1">
+                                <a href="#contact" class="bg-action-accent hover:bg-orange-600 text-white text-sm px-5 py-3 rounded-full inline-flex items-center gap-2 transition-all">
+                                    DEPLOY WEB POD <span class="material-symbols-outlined text-base">arrow_forward</span>
+                                </a>
+                                <a href="https://wa.me/918957276641" target="_blank" rel="noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-3 rounded-full inline-flex items-center gap-2 transition-all">
+                                    <span class="material-symbols-outlined text-base">chat</span> WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Feature Bento Grid -->
+                <section class="py-12">
+                    <div class="flex items-center gap-3 text-xs font-mono text-action-accent uppercase tracking-widest mb-8 border-b border-slate-200/80 pb-4">
+                        <span>02 // CORE ARCHITECTURE</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">dataset</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">High-Concurrency Backend</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Node.js, PostgreSQL, and Redis caching architected for low latency and zero downtime deployment.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / ARCH / 01</div>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">dashboard</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">Custom Client Portals</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Tailored admin panels, role-based permission control (RBAC), and SOC2-ready authentication.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / ARCH / 02</div>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">cloud_done</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">Cloud Native & CI/CD</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Docker containerization, Kubernetes clusters, and automated GitHub Actions pipelines.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / ARCH / 03</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- PAGE VIEW: ai-agents -->
+    <div id="page-ai-agents" class="page-view" style="display:none">
+        <main class="flex-grow w-full">
+            <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop pt-24 pb-20">
+                <section class="subpage-hero-banner relative w-full rounded-3xl overflow-hidden mb-16" style="height:560px;margin-left:clamp(0px, calc(-1 * var(--margin-desktop, 80px)), -80px);margin-right:clamp(0px, calc(-1 * var(--margin-desktop, 80px)), -80px);width:min(calc(100% + 160px), 100vw);">
+                    <img
+                        src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&dpr=2"
+                        alt="AI Agents &amp; LLM Orchestration"
+                        class="absolute inset-0 w-full h-full object-cover object-center"
+                    />
+                    <div class="hero-gradient absolute inset-0" style="background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0.85) 60%, rgba(255,255,255,1) 80%);"></div>
+                    <div class="hero-content-side absolute inset-0 flex items-end md:items-center justify-start md:justify-end px-5 md:px-20 pb-8 md:pb-0">
+                        <div class="hero-content-inner max-w-md flex flex-col gap-4 md:gap-5">
+                            <div class="flex items-center gap-2 text-xs font-mono text-action-accent uppercase tracking-widest">
+                                <span class="material-symbols-outlined text-base">psychology</span>
+                                AI Agents &amp; LLMs
+                            </div>
+                            <h1 class="text-3xl md:text-5xl font-normal text-slate-900 tracking-tight leading-tight">
+                                Autonomous AI Agents &amp; <span class="text-action-accent italic">RAG Systems</span>.
+                            </h1>
+                            <p class="text-sm md:text-base text-slate-600 leading-relaxed">
+                                Custom LLM orchestrators, RAG pipelines, and multi-agent workflows — built to automate complex enterprise logic.
+                            </p>
+                            <div class="flex flex-wrap gap-3 pt-1">
+                                <a href="#contact" class="bg-action-accent hover:bg-orange-600 text-white text-sm px-5 py-3 rounded-full inline-flex items-center gap-2 transition-all">
+                                    DEPLOY AI POD <span class="material-symbols-outlined text-base">arrow_forward</span>
+                                </a>
+                                <a href="https://wa.me/918957276641" target="_blank" rel="noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-3 rounded-full inline-flex items-center gap-2 transition-all">
+                                    <span class="material-symbols-outlined text-base">chat</span> WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bento Grid -->
+                <section class="py-12">
+                    <div class="flex items-center gap-3 text-xs font-mono text-action-accent uppercase tracking-widest mb-8 border-b border-slate-200/80 pb-4">
+                        <span>02 // AI ARCHITECTURE & CAPABILITIES</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">smart_toy</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">Agentic Workflows</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Autonomous agents that execute multi-step logic, interact with external APIs, and make dynamic contextual decisions.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / AI / 01</div>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">database</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">Vector Search & RAG</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Grounding LLMs in your proprietary database using Pinecone, Qdrant, and hybrid vector retrieval.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / AI / 02</div>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">model_training</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">Custom Model Fine-Tuning</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Fine-tuning Llama 3, Mistral, and domain-specific models for specialized enterprise vocabularies.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / AI / 03</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    
+
+    <!-- PAGE VIEW: products -->
+    <div id="page-products" class="page-view" style="display:none">
+        <main class="flex-grow w-full">
+
+
+            <!-- Hero Section -->
+<section class="px-margin-mobile md:px-margin-desktop py-section-gap max-w-[1280px] mx-auto text-center md:text-left">
+<p class="text-metadata font-metadata text-on-surface-variant mb-6 tracking-widest uppercase">--- 01 / OUR PRODUCTS</p>
+<h1 class="text-display-hero-mobile md:text-display-hero font-display-hero-mobile md:font-display-hero text-primary mb-8 max-w-4xl">Powerful White-Label Products for Your Clients.</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl">Scalable, secure, and ready-to-deploy digital solutions built to drive growth for your consultancy.</p>
+</section>
+<!-- Products Grid Section -->
+<section class="px-margin-mobile md:px-margin-desktop pb-section-gap max-w-[1280px] mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-element-gap">
+<!-- Trading Terminal -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="monitoring">monitoring</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">Trading Terminal</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 01</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Advanced trading platform built for fast market analysis, real-time data and smarter trading decisions.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Live market data &amp; charts</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Forex, stocks &amp; crypto</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Advanced technical analysis</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="Trading Terminal" src="assets/images/screen_5_img_1.jpg"/>
+</div>
+</article>
+<!-- Taxi & Cab Booking -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="local_taxi">local_taxi</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">Taxi &amp; Cab Booking</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 02</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Smart ride-booking solution connecting passengers with drivers for fast and reliable transportation.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Instant ride booking</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Live driver tracking</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Driver &amp; trip management</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="Taxi &amp; Cab Booking" src="assets/images/screen_5_img_2.jpg"/>
+</div>
+</article>
+<!-- Video Streaming -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="play_circle">play_circle</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">Video Streaming</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 03</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Feature-rich streaming platform designed for seamless entertainment across devices.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> HD &amp; 4K video streaming</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Live TV &amp; on-demand</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Personalized recommendations</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="Video Streaming" src="assets/images/screen_5_img_3.jpg"/>
+</div>
+</article>
+<!-- Fantasy Game -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="sports_esports">sports_esports</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">Fantasy Game</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 04</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Engaging fantasy sports platform allowing users to build teams, compete, and win.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Live contest tracking</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Multiple sports support</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Secure prize payouts</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="Fantasy Game" src="assets/images/screen_5_img_4.jpg"/>
+</div>
+</article>
+<!-- Grocery Store -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="local_grocery_store">local_grocery_store</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">Grocery Store</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 05</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Comprehensive grocery delivery app for fast, reliable daily essentials.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Smart inventory tracking</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Express delivery options</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Easy reordering</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="Grocery Store" src="assets/images/screen_5_img_5.jpg"/>
+</div>
+</article>
+<!-- Food Delivery -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="restaurant">restaurant</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">Food Delivery</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 06</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Seamless food ordering platform connecting hungry users with top local restaurants.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Real-time tracking</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Diverse restaurant choices</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Contactless delivery</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="Food Delivery" src="assets/images/screen_5_img_6.jpg"/>
+</div>
+</article>
+<!-- Social Media -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="groups">groups</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">Social Media</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 07</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Next-generation social platform for sharing moments, connecting, and building communities.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Rich media sharing</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Real-time messaging</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Content discovery</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="Social Media" src="assets/images/screen_5_img_7.jpg"/>
+</div>
+</article>
+<!-- Chatting App -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="chat">chat</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">Chatting App</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 08</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Secure, fast messaging application built for personal and team communication.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> End-to-end encryption</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Group chats &amp; channels</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Seamless media sharing</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="Chatting App" src="assets/images/screen_5_img_8.jpg"/>
+</div>
+</article>
+<!-- Ecommerce Solution -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="shopping_cart">shopping_cart</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">Ecommerce Solution</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 09</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Robust digital storefront for selling physical and digital goods globally.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Multiple payment gateways</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Inventory management</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Real-time order tracking</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="Ecommerce Solution" src="assets/images/screen_5_img_9.jpg"/>
+</div>
+</article>
+<!-- Payment & Recharge -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="payment">payment</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">Payment &amp; Recharge</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 10</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">All-in-one financial app for mobile recharges, bill payments, and quick transfers.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Instant transactions</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Secure digital wallet</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Automated bill reminders</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="Payment &amp; Recharge" src="assets/images/screen_5_img_10.jpg"/>
+</div>
+</article>
+<!-- Live Vehicle Tracking -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="location_on">location_on</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">Live Vehicle Tracking</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 11</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Advanced fleet management and personal vehicle tracking system.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Real-time GPS tracking</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Detailed route history</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Custom geofencing alerts</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="Live Vehicle Tracking" src="assets/images/screen_5_img_11.jpg"/>
+</div>
+</article>
+<!-- Multivendor Marketplace -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="storefront">storefront</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">Multivendor Marketplace</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 12</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Scalable marketplace platform enabling multiple sellers to manage their stores.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Intuitive vendor dashboards</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Unified shopping cart</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Commission management</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="Multivendor Marketplace" src="assets/images/screen_5_img_12.jpg"/>
+</div>
+</article>
+<!-- NFC Tag Solutions -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="nfc">nfc</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">NFC Tag Solutions</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 13</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Innovative contactless solution for digital business cards and smart interactions.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Tap-to-share profiles</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Custom profile management</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Rich analytics dashboard</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="NFC Tag Solutions" src="assets/images/screen_5_img_13.jpg"/>
+</div>
+</article>
+<!-- Astrology App -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">Astrology App</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 14</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Personalized astrology platform offering horoscopes and expert consultations.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Daily horoscopes &amp; insights</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Live expert consultation</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Detailed birth charts</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="Astrology App" src="assets/images/screen_5_img_14.jpg"/>
+</div>
+</article>
+<!-- Pooja Booking App -->
+<article class="product-card glass-card rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="self_improvement">self_improvement</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-headline-md font-headline-md text-primary">Pooja Booking App</h3>
+<span class="text-metadata font-metadata text-on-surface-variant border border-border-subtle px-2 py-1 rounded-lg">SYS / 15</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Dedicated spiritual platform for booking religious services and rituals.</p>
+<ul class="space-y-2 mb-8 text-body-md font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Verified priests &amp; services</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Online ritual streaming</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-secondary mr-2 text-sm" data-icon="check">check</span> Spiritual commerce store</li>
+</ul>
+</div>
+<div class="mt-auto relative h-64 w-full bg-surface-container-low flex items-center justify-center overflow-hidden border border-border-subtle">
+<img loading="lazy" referrerpolicy="no-referrer" class="object-contain h-full w-full" data-alt="Pooja Booking App" src="assets/images/screen_5_img_15.jpg"/>
+</div>
+</article>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="px-margin-mobile md:px-margin-desktop py-section-gap bg-surface-container-highest border-t border-b border-border-subtle">
+<div class="max-w-[1280px] mx-auto text-center">
+<h2 class="text-headline-lg font-headline-lg text-primary mb-8">Ready to launch a new product line?</h2>
+<a class="inline-flex items-center px-8 py-4 bg-primary text-on-primary text-label-caps font-label-caps rounded-full-full hover:bg-opacity-90 transition-all shadow-sm" href="#contact">
+                    Start a Partnership Conversation
+                    <span class="material-symbols-outlined ml-3" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</section>
+        </main>
+    </div>
+    
+
+    <!-- PAGE VIEW: services -->
+    <div id="page-services" class="page-view" style="display:none">
+        <main class="flex-grow w-full">
+
+            <!-- Hero Section -->
+            <section class="pt-24 pb-16 relative">
+                <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-card border border-action-accent/30 text-xs font-mono font-bold text-action-accent mb-6">
+                        <span class="w-2 h-2 rounded-full bg-action-accent animate-pulse"></span>
+                        WHITE-LABEL ENGINEERING PODS & SERVICES
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6 max-w-4xl">
+                        Engineering Excellence, <br/>
+                        <span class="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent italic">Delivered Under Your Brand</span>.
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-700 font-medium max-w-2xl leading-relaxed mb-8">
+                        Access high-performance engineering squads specializing in modern tech stacks. We stay behind the scenes under strict NDAs while you maintain 100% client relationship ownership.
+                    </p>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <a href="#contact" class="bg-action-accent hover:bg-orange-600 text-white font-bold text-sm px-8 py-4 rounded-full inline-flex items-center gap-2 shadow-lg shadow-orange-500/25 hover:scale-105 transition-all">
+                            BOOK A POD CONSULTATION
+                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                        </a>
+                        <a href="https://wa.me/918957276641?text=Hello%20XstreamBay%20Team%2C%20I%20would%20like%20to%20discuss%20engineering%20pod%20deputation." target="_blank" rel="noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-6 py-4 rounded-full inline-flex items-center gap-2 shadow-lg shadow-emerald-500/25 hover:scale-105 transition-all">
+                            <span class="material-symbols-outlined text-lg">chat</span>
+                            WhatsApp: +91 8957276641
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Section Header -->
+            <section class="py-12 max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
+                <div class="flex items-center gap-3 font-mono text-xs font-bold text-action-accent tracking-widest uppercase mb-12 border-b border-slate-200/80 pb-4">
+                    <span>01 // CORE ENGINEERING CAPABILITIES</span>
+                </div>
+
+                <!-- Modern Glassmorphism Bento Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Card 01: AI Agents & LLMs -->
+                    <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform relative overflow-hidden group">
+                        <div class="relative h-48 rounded-2xl overflow-hidden mb-6">
+                            <img src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="AI Agents" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 glass-pill px-3 py-1 rounded-full text-xs font-mono font-bold text-slate-900">SVC / 01</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-action-accent transition-colors">AI Agents & LLM Workflows</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-6">Custom autonomous AI agents, retrieval-augmented generation (RAG) systems, and multi-modal LLM pipelines that automate complex enterprise logic.</p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">Python</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">LangChain</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">PyTorch</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">Pinecone / RAG</span>
+                            </div>
+                        </div>
+                        <a href="#ai-agents" class="w-full text-center bg-slate-900 hover:bg-action-accent text-white font-bold text-xs py-3 rounded-full transition-colors flex items-center justify-center gap-2">
+                            EXPLORE AI CAPABILITIES <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </a>
+                    </div>
+
+                    <!-- Card 02: Full-Stack Web Applications -->
+                    <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform relative overflow-hidden group">
+                        <div class="relative h-48 rounded-2xl overflow-hidden mb-6">
+                            <img src="https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Web Apps" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 glass-pill px-3 py-1 rounded-full text-xs font-mono font-bold text-slate-900">SVC / 02</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-action-accent transition-colors">Web Applications & SaaS</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-6">High-concurrency web platforms, SaaS portals, and enterprise internal dashboards engineered with Next.js 14 and cloud microservices.</p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">Next.js 14</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">React</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">Node.js</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">TypeScript</span>
+                            </div>
+                        </div>
+                        <a href="#web-apps" class="w-full text-center bg-slate-900 hover:bg-action-accent text-white font-bold text-xs py-3 rounded-full transition-colors flex items-center justify-center gap-2">
+                            EXPLORE WEB APPS <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </a>
+                    </div>
+
+                    <!-- Card 03: Mobile Development -->
+                    <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform relative overflow-hidden group">
+                        <div class="relative h-48 rounded-2xl overflow-hidden mb-6">
+                            <img src="https://images.pexels.com/photos/1092671/pexels-photo-1092671.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Mobile Development" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 glass-pill px-3 py-1 rounded-full text-xs font-mono font-bold text-slate-900">SVC / 03</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-action-accent transition-colors">Cross-Platform & Native Mobile</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-6">High-performance iOS and Android applications designed for consumer scale, real-time sync, and fluid animations.</p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">React Native</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">Flutter</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">Swift</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">Kotlin</span>
+                            </div>
+                        </div>
+                        <a href="#mobile-dev" class="w-full text-center bg-slate-900 hover:bg-action-accent text-white font-bold text-xs py-3 rounded-full transition-colors flex items-center justify-center gap-2">
+                            EXPLORE MOBILE DEV <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </a>
+                    </div>
+
+                    <!-- Card 04: Data Analytics & BI -->
+                    <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform relative overflow-hidden group">
+                        <div class="relative h-48 rounded-2xl overflow-hidden mb-6">
+                            <img src="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Data BI" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 glass-pill px-3 py-1 rounded-full text-xs font-mono font-bold text-slate-900">SVC / 04</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-action-accent transition-colors">Data Pipelines & Analytics BI</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-6">ETL pipelines, data warehousing, and interactive executive dashboards turning raw metrics into actionable intelligence.</p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">Snowflake</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">PostgreSQL</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">Kafka</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">Tableau</span>
+                            </div>
+                        </div>
+                        <a href="#data-bi" class="w-full text-center bg-slate-900 hover:bg-action-accent text-white font-bold text-xs py-3 rounded-full transition-colors flex items-center justify-center gap-2">
+                            EXPLORE DATA & BI <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </a>
+                    </div>
+
+                    <!-- Card 05: Workflow Automation -->
+                    <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform relative overflow-hidden group">
+                        <div class="relative h-48 rounded-2xl overflow-hidden mb-6">
+                            <img src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Intelligent Automation" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 glass-pill px-3 py-1 rounded-full text-xs font-mono font-bold text-slate-900">SVC / 05</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-action-accent transition-colors">Intelligent Workflow Automation</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-6">Eliminate manual operational bottlenecks with custom RPA engines, automated webhook integrations, and API middleware.</p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">n8n</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">Python RPA</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">Zapier Enterprise</span>
+                                <span class="px-2.5 py-1 glass-pill rounded-full text-[11px] font-mono font-medium text-slate-700">REST APIs</span>
+                            </div>
+                        </div>
+                        <a href="#automation" class="w-full text-center bg-slate-900 hover:bg-action-accent text-white font-bold text-xs py-3 rounded-full transition-colors flex items-center justify-center gap-2">
+                            EXPLORE AUTOMATION <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </a>
+                    </div>
+
+                    <!-- Card 06: White-Label Turnkey Products -->
+                    <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform relative overflow-hidden group bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-white">
+                        <div class="relative h-48 rounded-2xl overflow-hidden mb-6 bg-slate-900 p-6 flex flex-col justify-between text-white">
+                            <span class="glass-pill px-3 py-1 rounded-full text-xs font-mono font-bold text-orange-400 w-max">15+ READY PLATFORMS</span>
+                            <div>
+                                <h4 class="text-xl font-bold mb-1">Instant Deployment</h4>
+                                <p class="text-slate-400 text-xs">Re-brand & launch enterprise software platforms for clients in under 72 hours.</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-action-accent transition-colors">15 Ready White-Label Products</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-6">Fintech trading portals, taxi cab dispatching, streaming platforms, and multivendor e-commerce ready for client deployment.</p>
+                        </div>
+                        <a href="#products" class="w-full text-center bg-action-accent hover:bg-orange-600 text-white font-bold text-xs py-3 rounded-full transition-colors flex items-center justify-center gap-2 shadow-md">
+                            VIEW 15 PRODUCTS <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Engagement Models Section -->
+            <section class="py-16 max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
+                <div class="flex items-center gap-3 font-mono text-xs font-bold text-action-accent tracking-widest uppercase mb-12 border-b border-slate-200/80 pb-4">
+                    <span>02 // AGENCY ENGAGEMENT MODELS</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Model 1 -->
+                    <div class="glass-card p-8 rounded-3xl flex flex-col justify-between hover:scale-[1.02] transition-transform">
+                        <div>
+                            <div class="w-12 h-12 rounded-2xl bg-orange-500/10 text-action-accent flex items-center justify-center mb-6">
+                                <span class="material-symbols-outlined text-2xl">groups</span>
+                            </div>
+                            <span class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider block mb-1">MODEL / 01</span>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-3">Dedicated Senior Pods</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-6">A cohesive squad of full-stack, mobile, AI, and DevOps engineers assigned exclusively to your agency. Seamlessly integrated into your Slack, Jira, and GitHub repositories.</p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-200/80 text-xs font-mono text-slate-700">
+                            <span class="text-emerald-600 font-bold">✓ Daily Standups & Sprint Demos</span>
+                        </div>
+                    </div>
+
+                    <!-- Model 2 -->
+                    <div class="glass-card p-8 rounded-3xl flex flex-col justify-between hover:scale-[1.02] transition-transform">
+                        <div>
+                            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-600 flex items-center justify-center mb-6">
+                                <span class="material-symbols-outlined text-2xl">assignment_turned_in</span>
+                            </div>
+                            <span class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider block mb-1">MODEL / 02</span>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-3">Project-Based SLA</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-6">Fixed-scope, turn-key delivery with guaranteed delivery milestones. Managed entirely by our senior technical architects while you present to the client.</p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-200/80 text-xs font-mono text-slate-700">
+                            <span class="text-blue-600 font-bold">✓ Fixed Price & Milestones</span>
+                        </div>
+                    </div>
+
+                    <!-- Model 3 -->
+                    <div class="glass-card p-8 rounded-3xl flex flex-col justify-between hover:scale-[1.02] transition-transform">
+                        <div>
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center mb-6">
+                                <span class="material-symbols-outlined text-2xl">person_add</span>
+                            </div>
+                            <span class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider block mb-1">MODEL / 03</span>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-3">Staff Augmentation</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-6">Rapidly inject senior individual contributors into your existing dev team to eliminate backlogs and accelerate velocity without full hiring overhead.</p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-200/80 text-xs font-mono text-slate-700">
+                            <span class="text-action-accent font-bold">✓ Deployed in &lt; 24 Hours</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mid-Page Glass Banner CTA -->
+            <section class="py-12 max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
+                <div class="glass-card-dark rounded-3xl p-10 md:p-16 text-center text-white relative overflow-hidden">
+                    <div class="relative z-10 max-w-3xl mx-auto">
+                        <span class="glass-pill px-4 py-1 rounded-full text-xs font-mono font-bold text-orange-400 mb-4 inline-block">PERPETUAL IP OWNERSHIP & STRICT NDA</span>
+                        <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-6">Ready to scale your agency's engineering velocity?</h2>
+                        <p class="text-slate-300 font-medium text-base mb-8 leading-relaxed">Let's discuss how our engineering pods can integrate seamlessly into your client operations under your brand name.</p>
+                        <div class="flex flex-wrap items-center justify-center gap-4">
+                            <a href="#contact" class="bg-action-accent hover:bg-orange-600 text-white font-bold text-sm px-8 py-4 rounded-full inline-flex items-center gap-2 shadow-lg shadow-orange-500/25 transition-all">
+                                BOOK A PARTNER CALL
+                                <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                            </a>
+                            <a href="https://wa.me/918957276641?text=Hello%20XstreamBay%20Team%2C%20I%20would%20like%20to%20discuss%20a%20white-label%20partnership." target="_blank" rel="noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-6 py-4 rounded-full inline-flex items-center gap-2 shadow-lg shadow-emerald-500/25 transition-all">
+                                <span class="material-symbols-outlined text-lg">chat</span>
+                                WhatsApp: +91 8957276641
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    
+
+    <!-- PAGE VIEW: data-bi -->
+    <div id="page-data-bi" class="page-view" style="display:none">
+        <main class="flex-grow w-full">
+            <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop pt-24 pb-20">
+                <!-- Hero Banner -->
+                <section class="subpage-hero-banner relative w-full rounded-3xl overflow-hidden mb-16" style="height:560px;margin-left:clamp(0px, calc(-1 * var(--margin-desktop, 80px)), -80px);margin-right:clamp(0px, calc(-1 * var(--margin-desktop, 80px)), -80px);width:min(calc(100% + 160px), 100vw);">
+                    <img
+                        src="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&dpr=2"
+                        alt="Data Analytics & BI"
+                        class="absolute inset-0 w-full h-full object-cover object-center"
+                    />
+                    <div class="hero-gradient absolute inset-0" style="background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0.85) 60%, rgba(255,255,255,1) 80%);"></div>
+                    <div class="hero-content-side absolute inset-0 flex items-end md:items-center justify-start md:justify-end px-5 md:px-20 pb-8 md:pb-0">
+                        <div class="hero-content-inner max-w-md flex flex-col gap-4 md:gap-5">
+                            <div class="flex items-center gap-2 text-xs font-mono text-action-accent uppercase tracking-widest">
+                                <span class="material-symbols-outlined text-base">database</span>
+                                Data Analytics &amp; BI
+                            </div>
+                            <h1 class="text-3xl md:text-5xl font-normal text-slate-900 tracking-tight leading-tight">
+                                Data Engineering &amp; <span class="text-action-accent italic">Business Intelligence</span>.
+                            </h1>
+                            <p class="text-sm md:text-base text-slate-600 leading-relaxed">
+                                ETL pipelines, real-time data warehousing, and executive BI dashboards — turning raw data into decisions.
+                            </p>
+                            <div class="flex flex-wrap gap-3 pt-1">
+                                <a href="#contact" class="bg-action-accent hover:bg-orange-600 text-white text-sm px-5 py-3 rounded-full inline-flex items-center gap-2 transition-all">
+                                    INITIALIZE PIPELINE <span class="material-symbols-outlined text-base">arrow_forward</span>
+                                </a>
+                                <a href="https://wa.me/918957276641" target="_blank" rel="noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-3 rounded-full inline-flex items-center gap-2 transition-all">
+                                    <span class="material-symbols-outlined text-base">chat</span> WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bento Grid -->
+                <section class="py-12">
+                    <div class="flex items-center gap-3 text-xs font-mono text-action-accent uppercase tracking-widest mb-8 border-b border-slate-200/80 pb-4">
+                        <span>02 // DATA ARCHITECTURE</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">dataset</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">ETL Pipelines</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Robust pipelines to aggregate, clean, and structure high-volume data streams into unified architectures.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / DAT / 01</div>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">monitoring</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">Executive Dashboards</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Interactive, high-fidelity Tableau & PowerBI dashboards translating complex datasets into operational clarity.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / DAT / 02</div>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">psychology</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">Predictive Analytics</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Machine learning algorithms applied to historical data to forecast trends and optimize business outcomes.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / DAT / 03</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- PAGE VIEW: automation -->
+    <div id="page-automation" class="page-view" style="display:none">
+        <main class="flex-grow w-full">
+            <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop pt-24 pb-20">
+                <section class="subpage-hero-banner relative w-full rounded-3xl overflow-hidden mb-16" style="height:560px;margin-left:clamp(0px, calc(-1 * var(--margin-desktop, 80px)), -80px);margin-right:clamp(0px, calc(-1 * var(--margin-desktop, 80px)), -80px);width:min(calc(100% + 160px), 100vw);">
+                    <img
+                        src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&dpr=2"
+                        alt="Intelligent Automation & Workflow RPA"
+                        class="absolute inset-0 w-full h-full object-cover object-center"
+                    />
+                    <div class="hero-gradient absolute inset-0" style="background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0.85) 60%, rgba(255,255,255,1) 80%);"></div>
+                    <div class="hero-content-side absolute inset-0 flex items-end md:items-center justify-start md:justify-end px-5 md:px-20 pb-8 md:pb-0">
+                        <div class="hero-content-inner max-w-md flex flex-col gap-4 md:gap-5">
+                            <div class="flex items-center gap-2 text-xs font-mono text-action-accent uppercase tracking-widest">
+                                <span class="material-symbols-outlined text-base">account_tree</span>
+                                Intelligent Automation
+                            </div>
+                            <h1 class="text-3xl md:text-5xl font-normal text-slate-900 tracking-tight leading-tight">
+                                Intelligent Automation &amp; <span class="text-action-accent italic">Workflow RPA</span>.
+                            </h1>
+                            <p class="text-sm md:text-base text-slate-600 leading-relaxed">
+                                Custom RPA engines, webhook integrations, and API middleware — eliminating manual bottlenecks across legacy systems.
+                            </p>
+                            <div class="flex flex-wrap gap-3 pt-1">
+                                <a href="#contact" class="bg-action-accent hover:bg-orange-600 text-white text-sm px-5 py-3 rounded-full inline-flex items-center gap-2 transition-all">
+                                    DEPLOY AUTOMATION <span class="material-symbols-outlined text-base">arrow_forward</span>
+                                </a>
+                                <a href="https://wa.me/918957276641" target="_blank" rel="noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-3 rounded-full inline-flex items-center gap-2 transition-all">
+                                    <span class="material-symbols-outlined text-base">chat</span> WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bento Grid -->
+                <section class="py-12">
+                    <div class="flex items-center gap-3 text-xs font-mono text-action-accent uppercase tracking-widest mb-8 border-b border-slate-200/80 pb-4">
+                        <span>02 // AUTOMATION ARCHITECTURE</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">account_tree</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">Workflow Orchestration</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Task routing, conditional logic, and state management across distributed enterprise systems.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / AUTO / 01</div>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">smart_toy</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">Robotic Process Automation</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Resilient bots that interact with legacy GUI interfaces and modern APIs alike.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / AUTO / 02</div>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">speed</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">Process Bottleneck Audit</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Analyzing execution logs to eliminate manual drag and maximize throughput.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / AUTO / 03</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- PAGE VIEW: mobile-dev -->
+    <div id="page-mobile-dev" class="page-view" style="display:none">
+        <main class="flex-grow w-full">
+            <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop pt-24 pb-20">
+                <!-- Hero Banner -->
+                <section class="subpage-hero-banner relative w-full rounded-3xl overflow-hidden mb-16" style="height:560px;margin-left:clamp(0px, calc(-1 * var(--margin-desktop, 80px)), -80px);margin-right:clamp(0px, calc(-1 * var(--margin-desktop, 80px)), -80px);width:min(calc(100% + 160px), 100vw);">
+                    <img
+                        src="https://images.pexels.com/photos/1092671/pexels-photo-1092671.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&dpr=2"
+                        alt="Mobile App Development"
+                        class="absolute inset-0 w-full h-full object-cover object-center"
+                    />
+                    <div class="hero-gradient absolute inset-0" style="background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0.85) 60%, rgba(255,255,255,1) 80%);"></div>
+                    <div class="hero-content-side absolute inset-0 flex items-end md:items-center justify-start md:justify-end px-5 md:px-20 pb-8 md:pb-0">
+                        <div class="hero-content-inner max-w-md flex flex-col gap-4 md:gap-5">
+                            <div class="flex items-center gap-2 text-xs font-mono text-action-accent uppercase tracking-widest">
+                                <span class="material-symbols-outlined text-base">smartphone</span>
+                                Mobile Development
+                            </div>
+                            <h1 class="text-3xl md:text-5xl font-normal text-slate-900 tracking-tight leading-tight">
+                                High-Performance <span class="text-action-accent italic">iOS &amp; Android Apps</span>.
+                            </h1>
+                            <p class="text-sm md:text-base text-slate-600 leading-relaxed">
+                                React Native, Flutter, Swift &amp; Kotlin — cross-platform and native mobile built for consumer scale.
+                            </p>
+                            <div class="flex flex-wrap gap-3 pt-1">
+                                <a href="#contact" class="bg-action-accent hover:bg-orange-600 text-white text-sm px-5 py-3 rounded-full inline-flex items-center gap-2 transition-all">
+                                    DEPLOY MOBILE POD <span class="material-symbols-outlined text-base">arrow_forward</span>
+                                </a>
+                                <a href="https://wa.me/918957276641" target="_blank" rel="noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-3 rounded-full inline-flex items-center gap-2 transition-all">
+                                    <span class="material-symbols-outlined text-base">chat</span> WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- Bento Grid -->
+                <section class="py-12">
+                    <div class="flex items-center gap-3 text-xs font-mono text-action-accent uppercase tracking-widest mb-8 border-b border-slate-200/80 pb-4">
+                        <span>02 // MOBILE ARCHITECTURE</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">speed</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">Native Swift & Kotlin</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Platform-specific Swift & Kotlin development ensuring maximum hardware utilization and smooth 60fps animations.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / MOB / 01</div>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">layers</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">Cross-Platform Efficiency</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Unified React Native and Flutter codebases delivering near-native performance while cutting launch timeline in half.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / MOB / 02</div>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                            <div>
+                                <span class="material-symbols-outlined text-3xl text-action-accent mb-4">touch_app</span>
+                                <h3 class="text-xl font-normal text-slate-900 mb-2">Intuitive UX & Haptics</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">Frictionless interface design mapped to cognitive ease, micro-interactions, and real-time push notifications.</p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-slate-400">SYS / MOB / 03</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    
+    </div>
+
+    <!-- GLOBAL FOOTER -->
+    <footer class="bg-primary text-on-primary pt-16 pb-12 border-t border-on-surface-variant/20">
+        <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
+            <div class="footer-grid grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
+                <div class="footer-brand-col md:col-span-4">
+                    <div class="font-headline-md text-headline-md font-bold tracking-tighter text-on-primary mb-4">XstreamBay</div>
+                    <p class="text-body-md text-on-primary-container max-w-sm mb-6">
+                        White-label engineering capacity for ambitious consultancies and enterprise teams. 100% IP ownership, zero attribution required.
+                    </p>
+                    <div class="flex items-center space-x-3">
+                        <a href="https://wa.me/918957276641?text=Hello%20XstreamBay%20Team" target="_blank" rel="noopener noreferrer" title="Direct WhatsApp +91 8957276641" class="px-4 py-2 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center gap-2 hover:bg-emerald-500 hover:text-white transition-all text-xs font-semibold">
+                            <span class="material-symbols-outlined text-base">chat</span>
+                            WhatsApp: +91 8957276641
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-2">
+                    <h4 class="font-label-caps text-label-caps text-on-primary-container mb-4 uppercase">Capabilities</h4>
+                    <ul class="space-y-3 text-body-md text-on-primary-container">
+                        <li><a href="#web-apps" class="hover:text-on-primary transition-colors">Web Apps</a></li>
+                        <li><a href="#ai-agents" class="hover:text-on-primary transition-colors">AI Agents</a></li>
+                        <li><a href="#data-bi" class="hover:text-on-primary transition-colors">Data BI</a></li>
+                        <li><a href="#automation" class="hover:text-on-primary transition-colors">Automation</a></li>
+                        <li><a href="#mobile-dev" class="hover:text-on-primary transition-colors">Mobile Dev</a></li>
+                    </ul>
+                </div>
+
+                <div class="md:col-span-3">
+                    <h4 class="font-label-caps text-label-caps text-on-primary-container mb-4 uppercase">White-Label Products</h4>
+                    <ul class="space-y-3 text-body-md text-on-primary-container">
+                        <li><a href="#products" class="hover:text-on-primary transition-colors">Trading Terminal</a></li>
+                        <li><a href="#products" class="hover:text-on-primary transition-colors">Taxi & Cab Booking</a></li>
+                        <li><a href="#products" class="hover:text-on-primary transition-colors">Video Streaming Platform</a></li>
+                        <li><a href="#products" class="hover:text-on-primary transition-colors">Multivendor Marketplace</a></li>
+                        <li><a href="#products" class="hover:text-on-primary transition-colors">View All 15 Products →</a></li>
+                    </ul>
+                </div>
+
+                <div class="md:col-span-3">
+                    <h4 class="font-label-caps text-label-caps text-on-primary-container mb-4 uppercase">Partnership</h4>
+                    <ul class="space-y-3 text-body-md text-on-primary-container">
+                        <li><a href="#contact" class="hover:text-on-primary transition-colors">Book a Partner Call</a></li>
+                        <li><a href="#services" class="hover:text-on-primary transition-colors">Engagement Models</a></li>
+                        <li><a href="#contact" class="hover:text-on-primary transition-colors">Submit Project Scope</a></li>
+                        <li><a href="#home" class="hover:text-on-primary transition-colors">Privacy Policy</a></li>
+                        <li><a href="#home" class="hover:text-on-primary transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center text-xs text-on-primary-container gap-4">
+                <div>© 2026 XstreamBay Studio. All rights reserved. Precision White-Label Engineering.</div>
+                <div class="flex space-x-6">
+                    <a href="#home" class="hover:text-on-primary">Privacy</a>
+                    <a href="#home" class="hover:text-on-primary">Terms</a>
+                    <a href="#contact" class="hover:text-on-primary">Security & SOC2</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FLOATING DIRECT WHATSAPP BUTTON -->
+    <a href="https://wa.me/918957276641?text=Hello%20XstreamBay%20Team%2C%20I%20would%20like%20to%20discuss%20a%20white-label%20engineering%20partnership." target="_blank" rel="noopener noreferrer" title="Chat on WhatsApp +91 8957276641" class="wa-floating-btn fixed bottom-6 right-4 sm:right-6 z-50 glass-card px-3 sm:px-4 py-3 rounded-full flex items-center gap-3 shadow-2xl hover:scale-105 transition-all duration-300 group border border-emerald-400/50 hover:border-emerald-500">
+        <div class="w-9 h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-xl shadow-md group-hover:bg-emerald-600 transition-colors shrink-0">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.705 1.754zm6.097-4.148l.437.26c1.552.921 3.329 1.408 5.141 1.409 5.426 0 9.839-4.414 9.84-9.84.001-2.628-1.02-5.099-2.876-6.957-1.856-1.857-4.328-2.878-6.957-2.879-5.428 0-9.841 4.413-9.842 9.839 0 1.888.544 3.731 1.572 5.34l.286.448-1.002 3.66 3.748-.981zm11.387-5.464c-.301-.15-1.785-.881-2.062-.982-.276-.101-.477-.15-.678.15-.2.301-.777.982-.953 1.183-.175.201-.351.226-.652.075-.302-.151-1.274-.47-2.427-1.498-.897-.798-1.502-1.784-1.678-2.085-.175-.301-.019-.464.131-.614.136-.135.301-.351.452-.527.15-.175.201-.301.301-.502.101-.201.05-.377-.025-.527-.075-.15-.678-1.631-.929-2.235-.244-.588-.493-.509-.678-.518-.175-.008-.376-.008-.577-.008-.201 0-.527.075-.803.376-.276.301-1.054 1.03-1.054 2.512 0 1.482 1.079 2.913 1.229 3.114.15.201 2.124 3.243 5.145 4.547.719.311 1.281.497 1.719.636.722.23 1.378.197 1.897.12.577-.086 1.785-.729 2.036-1.432.251-.703.251-1.305.176-1.432-.075-.127-.276-.227-.577-.377z"/>
+            </svg>
+        </div>
+        <div class="wa-floating-label flex flex-col text-left">
+            <span class="text-[10px] font-mono font-bold tracking-wider text-emerald-600 uppercase">DIRECT WHATSAPP</span>
+            <span class="text-xs font-bold text-slate-900">+91 8957276641</span>
+        </div>
+    </a>
+
+    <!-- GLOBAL QUICK SEARCH MODAL -->
+    <div id="search-modal" class="fixed inset-0 z-50 hidden modal-backdrop flex items-start justify-center pt-20 px-4">
+        <div class="glass-modal rounded-3xl max-w-2xl w-full overflow-hidden">
+            <div class="p-4 border-b border-border-subtle flex items-center gap-3">
+                <span class="material-symbols-outlined text-on-surface-variant">search</span>
+                <input id="modal-search-input" type="text" placeholder="Type a product, service, or tech stack (e.g. Trading Terminal, Next.js, RAG)..." class="w-full text-body-md outline-none bg-transparent">
+                <button id="close-search-btn" class="text-on-surface-variant hover:text-primary text-xs glass-pill px-2.5 py-1 rounded-full">ESC</button>
+            </div>
+            <div id="search-results" class="max-h-96 overflow-y-auto p-4 divide-y divide-border-subtle">
+                <!-- Populated dynamically by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCT DETAIL & LIVE DEMO MODAL -->
+    <div id="product-modal" class="fixed inset-0 z-50 hidden modal-backdrop flex items-center justify-center p-4">
+        <div class="glass-modal rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto relative">
+            <button id="close-product-modal" class="absolute top-4 right-4 glass-pill hover:bg-white rounded-full p-2 text-primary z-10">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div id="product-modal-content">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- CONFIRMATION TOAST / MODAL -->
+    <div id="confirmation-modal" class="fixed inset-0 z-50 hidden modal-backdrop flex items-center justify-center p-4">
+        <div class="glass-modal rounded-3xl max-w-lg w-full p-8 text-center">
+            <div class="w-16 h-16 bg-green-100 text-green-600 rounded-lg-full flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-3xl">check_circle</span>
+            </div>
+            <h3 class="font-headline-md text-headline-md text-primary mb-2">Partner Request Received!</h3>
+            <p id="confirmation-msg" class="text-body-md text-on-surface-variant mb-6">
+                Your partnership inquiry has been logged in our system. An XstreamBay Solutions Architect will review your scope and contact you within 4 hours.
+            </p>
+            <div class="bg-surface-container-low p-4 rounded-lg text-left text-xs font-mono mb-6 space-y-1">
+                <div><span class="text-on-surface-variant">INQUIRY REF:</span> <span id="conf-ref" class="font-bold text-signal-line">XST-92841</span></div>
+                <div><span class="text-on-surface-variant">SLA TIMEFRAME:</span> <span class="font-bold">Under 4 Hours</span></div>
+                <div><span class="text-on-surface-variant">SECURITY:</span> <span class="font-bold text-green-700">NDA Enforced</span></div>
+            </div>
+            <button id="close-conf-btn" class="w-full bg-primary text-on-primary py-3 rounded-full font-semibold hover:bg-primary/90">
+                Back to Studio
+            </button>
+        </div>
+    </div>
+
+    <!-- APPLICATION JAVASCRIPT LOGIC -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // AI AGENT SANDBOX JS
+        const runAgentBtn = document.getElementById('run-agent-btn');
+        const agentLogOutput = document.getElementById('agent-log-output');
+        const agentStatusBadge = document.getElementById('agent-status-badge');
+        
+        if (runAgentBtn) {
+            runAgentBtn.addEventListener('click', () => {
+                const agentType = document.getElementById('agent-type-select').value;
+                const prompt = document.getElementById('agent-prompt-input').value || "Analyze customer churn data and propose automated retention workflow.";
+                
+                agentStatusBadge.textContent = "STATUS: RUNNING";
+                agentStatusBadge.className = "text-yellow-400 font-bold";
+                agentLogOutput.innerHTML = `<div class="text-blue-400">[0.00s] Initializing ${agentType.toUpperCase()} Agent runtime...</div>`;
+                
+                setTimeout(() => {
+                    agentLogOutput.innerHTML += `<div class="text-gray-300">[0.42s] Ingesting prompt: "${prompt.slice(0, 45)}..."</div>`;
+                }, 400);
+                
+                setTimeout(() => {
+                    agentLogOutput.innerHTML += `<div class="text-yellow-300">[0.88s] Querying vector embeddings database (Index: hybrid-cosine-v2)...</div>`;
+                }, 900);
+                
+                setTimeout(() => {
+                    agentLogOutput.innerHTML += `<div class="text-purple-300">[1.35s] Tool Invocation: Executing data_synthesis_tool()...</div>`;
+                }, 1400);
+                
+                setTimeout(() => {
+                    agentLogOutput.innerHTML += `<div class="text-green-400 font-bold">[1.90s] SUCCESS: Response generated. Task completed in 1.90s.</div>`;
+                    agentStatusBadge.textContent = "STATUS: IDLE";
+                    agentStatusBadge.className = "text-green-400 font-bold";
+                }, 1900);
+            });
+        }
+
+        // PRODUCTS CATEGORY FILTER & SEARCH
+        const catPills = document.querySelectorAll('.cat-pill');
+        const productSearchInput = document.getElementById('product-search-input');
+        
+        function filterProducts() {
+            const query = productSearchInput ? productSearchInput.value.toLowerCase() : '';
+            const activePill = document.querySelector('.cat-pill.bg-primary');
+            const cat = activePill ? activePill.getAttribute('data-cat') : 'all';
+            
+            const cards = document.querySelectorAll('#page-products h3');
+            cards.forEach(h3 => {
+                const card = h3.closest('div');
+                if (!card) return;
+                const titleText = h3.textContent.toLowerCase();
+                const matchesSearch = titleText.includes(query);
+                
+                let matchesCat = true;
+                if (cat === 'fintech') matchesCat = titleText.includes('trading') || titleText.includes('payment') || titleText.includes('nfc');
+                else if (cat === 'delivery') matchesCat = titleText.includes('taxi') || titleText.includes('food') || titleText.includes('grocery') || titleText.includes('vehicle');
+                else if (cat === 'media') matchesCat = titleText.includes('video') || titleText.includes('fantasy') || titleText.includes('social') || titleText.includes('chatting');
+                else if (cat === 'ecommerce') matchesCat = titleText.includes('ecommerce') || titleText.includes('multivendor') || titleText.includes('grocery');
+                else if (cat === 'niche') matchesCat = titleText.includes('astrology') || titleText.includes('pooja') || titleText.includes('nfc');
+                
+                if (matchesSearch && matchesCat) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        catPills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                catPills.forEach(p => {
+                    p.className = "cat-pill px-4 py-2 rounded-full text-xs font-semibold bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors";
+                });
+                pill.className = "cat-pill px-4 py-2 rounded-full text-xs font-semibold bg-primary text-white transition-colors";
+                filterProducts();
+            });
+        });
+        
+        if (productSearchInput) productSearchInput.addEventListener('input', filterProducts);
+
+        // CONTACT FORM — SHEETDB API
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const submitBtn = contactForm.querySelector('button[type="submit"]');
+                const successMsg = document.getElementById('contact-success-msg');
+
+                // Collect fields
+                const name    = document.getElementById('name')?.value.trim() || '';
+                const email   = document.getElementById('email')?.value.trim() || '';
+                const company = document.getElementById('company')?.value.trim() || '';
+                const phone   = document.getElementById('phone')?.value.trim() || '';
+                const website = document.getElementById('website')?.value.trim() || '';
+                const service = document.getElementById('service')?.value.trim() || '';
+                const message = document.getElementById('message')?.value.trim() || '';
+                const submittedAt = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+                // Loading state
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">progress_activity</span> Sending...';
+                }
+                if (successMsg) successMsg.classList.add('hidden');
+
+                try {
+                    const res = await fetch('https://sheetdb.io/api/v1/z50n1i1y0juym', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            data: [{
+                                'Name': name,
+                                'Email': email,
+                                'Company Name': company,
+                                'Phone': phone,
+                                'URL': website,
+                                'Service Needed': service,
+                                'Message': message
+                            }]
+                        })
+                    });
+
+                    if (!res.ok) throw new Error('API error');
+
+                    // Success
+                    if (successMsg) {
+                        successMsg.textContent = `✓ Thank you, ${name || 'there'}! Your inquiry has been received. Our lead architect will respond within 4 hours.`;
+                        successMsg.classList.remove('hidden');
+                    }
+                    contactForm.reset();
+
+                } catch (err) {
+                    if (successMsg) {
+                        successMsg.textContent = '✗ Something went wrong. Please try again or reach us directly on WhatsApp.';
+                        successMsg.classList.remove('hidden');
+                        successMsg.classList.add('bg-red-50', 'border-red-200', 'text-red-800');
+                        successMsg.classList.remove('bg-emerald-50', 'border-emerald-200', 'text-emerald-800');
+                    }
+                } finally {
+                    // Restore button
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Send Partnership Message <span class="material-symbols-outlined text-base">arrow_forward</span>';
+                    }
+                }
+            });
+        }
+
+
+        // WORKFLOW SIMULATOR
+        const triggerWfBtn = document.getElementById('trigger-wf-btn');
+        if (triggerWfBtn) {
+            triggerWfBtn.addEventListener('click', () => {
+                for (let i = 1; i <= 4; i++) {
+                    const st = document.getElementById(`wf-node-${i}-status`);
+                    if (st) {
+                        st.textContent = "QUEUED";
+                        st.className = "mt-3 text-[10px] bg-yellow-100 text-yellow-700 font-semibold px-2 py-0.5 rounded inline-block";
+                    }
+                }
+                
+                let step = 1;
+                const interval = setInterval(() => {
+                    if (step > 4) {
+                        clearInterval(interval);
+                        return;
+                    }
+                    const st = document.getElementById(`wf-node-${step}-status`);
+                    if (st) {
+                        st.textContent = "EXECUTED";
+                        st.className = "mt-3 text-[10px] bg-green-100 text-green-700 font-semibold px-2 py-0.5 rounded inline-block";
+                    }
+                    step++;
+                }, 500);
+            });
+        }
+
+        // ============================================================
+        // SPA ROUTER — display-only, no class conflicts
+        // ============================================================
+        const PAGE_IDS = [
+            'home', 'contact', 'web-apps', 'ai-agents',
+            'products', 'services', 'data-bi', 'automation', 'mobile-dev'
+        ];
+
+        function showPage(route) {
+            // Alias
+            if (route === 'capabilities' || route === 'capability') route = 'services';
+            // Fallback
+            if (!PAGE_IDS.includes(route)) route = 'home';
+
+            PAGE_IDS.forEach(id => {
+                const el = document.getElementById('page-' + id);
+                if (el) el.style.display = (id === route) ? 'block' : 'none';
+            });
+
+            window.scrollTo(0, 0);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash.replace('#', '').trim();
+            showPage(hash || 'home');
+        }
+
+        // Show current page on load
+        handleHash();
+
+        // Listen for hash changes (back/forward buttons)
+        window.addEventListener('hashchange', handleHash);
+
+        // Intercept ALL internal anchor clicks
+        document.addEventListener('click', function(e) {
+            const a = e.target.closest('a[href^="#"]');
+            if (!a) return;
+            const target = a.getAttribute('href').replace('#', '').trim();
+            if (!target) return;
+            e.preventDefault();
+            window.location.hash = target;
+            showPage(target);
+            // Close mobile drawer if open
+            const drawer = document.getElementById('mobile-drawer');
+            if (drawer) drawer.classList.add('hidden');
+        });
+
+        // MOBILE DRAWER
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeDrawerBtn = document.getElementById('close-drawer-btn');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+
+        function openMobileDrawer() {
+            mobileDrawer.classList.remove('hidden');
+        }
+
+        function closeMobileDrawer() {
+            mobileDrawer.classList.add('hidden');
+        }
+
+        if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileDrawer);
+        if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeMobileDrawer);
+        mobileDrawer.addEventListener('click', (e) => {
+            if (e.target === mobileDrawer) closeMobileDrawer();
+        });
+
+        // SEARCH MODAL LOGIC
+        const searchBtn = document.getElementById('search-btn');
+        const searchModal = document.getElementById('search-modal');
+        const closeSearchBtn = document.getElementById('close-search-btn');
+        const searchInput = document.getElementById('modal-search-input');
+        const searchResults = document.getElementById('search-results');
+
+        const searchData = [
+            { title: 'Web Application Development', category: 'Services', route: 'web-apps', desc: 'Scalable cloud architectures, Next.js, Node.js & high-performance APIs.' },
+            { title: 'AI Agents & LLMs', category: 'Services', route: 'ai-agents', desc: 'Agentic workflows, RAG knowledge retrieval, and custom model fine-tuning.' },
+            { title: 'Data Analytics & BI', category: 'Services', route: 'data-bi', desc: 'ETL pipelines, real-time data warehouses, and predictive ML dashboards.' },
+            { title: 'Intelligent Automation', category: 'Services', route: 'automation', desc: 'RPA engines, process optimization, and workflow orchestrators.' },
+            { title: 'Mobile Development', category: 'Services', route: 'mobile-dev', desc: 'Native Swift/Kotlin and cross-platform Flutter/React Native solutions.' },
+            { title: 'Trading Terminal', category: 'Products', route: 'products', desc: 'Institutional trading platform with charting, order matching & WebSocket feeds.' },
+            { title: 'Taxi & Cab Booking', category: 'Products', route: 'products', desc: 'On-demand ride hailing app with live driver tracking & dynamic pricing.' },
+            { title: 'Video Streaming', category: 'Products', route: 'products', desc: 'White-label OTT streaming platform with HLS video pipeline & subscription engine.' },
+            { title: 'Fantasy Game', category: 'Products', route: 'products', desc: 'Multi-sport fantasy league system with live scoring & wallet integration.' },
+            { title: 'Multivendor Marketplace', category: 'Products', route: 'products', desc: 'E-commerce platform supporting merchant onboarding, cart & payouts.' },
+            { title: 'Food Delivery App', category: 'Products', route: 'products', desc: 'Restaurant dispatch platform with driver app & customer ordering UI.' }
+        ];
+
+        function openSearch() {
+            searchModal.classList.remove('hidden');
+            searchInput.focus();
+            renderSearchResults('');
+        }
+
+        function closeSearch() {
+            searchModal.classList.add('hidden');
+        }
+
+        function renderSearchResults(query) {
+            const filtered = searchData.filter(item => 
+                item.title.toLowerCase().includes(query.toLowerCase()) || 
+                item.desc.toLowerCase().includes(query.toLowerCase()) ||
+                item.category.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            if (filtered.length === 0) {
+                searchResults.innerHTML = `<div class="text-center py-8 text-on-surface-variant text-sm">No matching services or products found.</div>`;
+                return;
+            }
+            
+            searchResults.innerHTML = filtered.map(item => `
+                <div class="py-3 px-2 hover:bg-surface-container-low rounded-lg cursor-pointer transition-colors flex items-center justify-between" onclick="selectSearchResult('${item.route}')">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-semibold text-primary text-sm">${item.title}</span>
+                            <span class="text-[10px] bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-lg font-mono">${item.category}</span>
+                        </div>
+                        <div class="text-xs text-on-surface-variant mt-0.5">${item.desc}</div>
+                    </div>
+                    <span class="material-symbols-outlined text-sm text-on-surface-variant">arrow_forward</span>
+                </div>
+            `).join('');
+        }
+
+        window.selectSearchResult = function(route) {
+            closeSearch();
+            window.location.hash = route;
+        };
+
+        if (searchBtn) searchBtn.addEventListener('click', openSearch);
+        if (closeSearchBtn) closeSearchBtn.addEventListener('click', closeSearch);
+        searchInput.addEventListener('input', (e) => renderSearchResults(e.target.value));
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                openSearch();
+            }
+            if (e.key === 'Escape') {
+                closeSearch();
+                closeProductModal();
+                closeConfModal();
+            }
+        });
+
+        // CONTACT FORM INTERACTION (confirmation modal)
+        const confModal = document.getElementById('confirmation-modal');
+        const closeConfBtn = document.getElementById('close-conf-btn');
+
+        function closeConfModal() {
+            confModal.classList.add('hidden');
+        }
+
+        const contactFormV2 = document.querySelector('#page-contact form');
+        if (contactFormV2 && !contactFormV2.dataset.bound) {
+            contactFormV2.dataset.bound = '1';
+            contactFormV2.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('name')?.value || 'Partner';
+                const refCode = 'XST-' + Math.floor(10000 + Math.random() * 90000);
+                if (document.getElementById('conf-ref')) document.getElementById('conf-ref').textContent = refCode;
+                if (document.getElementById('confirmation-msg')) document.getElementById('confirmation-msg').textContent = `Thank you, ${name}. Your inquiry has been received. Our senior architect will respond within 4 hours.`;
+                if (confModal) confModal.classList.remove('hidden');
+                contactFormV2.reset();
+            });
+        }
+
+        if (closeConfBtn) closeConfBtn.addEventListener('click', closeConfModal);
+
+        // PRODUCT MODAL DISPATCHER
+        window.openProductModal = function(title, category, imgUrl, desc) {
+            const productModal = document.getElementById('product-modal');
+            const modalContent = document.getElementById('product-modal-content');
+            
+            modalContent.innerHTML = `
+                <div class="p-6 border-b border-border-subtle bg-surface flex items-center gap-4">
+                    <img loading="lazy" referrerpolicy="no-referrer" src="${imgUrl}" alt="${title}" class="w-16 h-16 rounded-lg-lg object-cover border border-border-subtle">
+                    <div>
+                        <span class="text-xs bg-secondary-container text-on-secondary-container font-mono px-2 py-0.5 rounded-lg">${category}</span>
+                        <h2 class="text-2xl font-bold text-primary mt-1">${title}</h2>
+                    </div>
+                </div>
+                <div class="p-8 space-y-6">
+                    <div class="aspect-video w-full rounded-lg-lg overflow-hidden border border-border-subtle bg-black/5">
+                        <img loading="lazy" referrerpolicy="no-referrer" src="${imgUrl}" alt="${title} Full" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-primary mb-2">Product Overview</h4>
+                        <p class="text-on-surface-variant text-sm leading-relaxed">${desc || 'Enterprise-ready white-label platform engineered for high concurrency, microservice backend scalability, and seamless client brand customizability.'}</p>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 bg-surface p-4 rounded-lg-lg">
+                        <div>
+                            <div class="text-xs text-on-surface-variant">DEPUTATION TIME</div>
+                            <div class="font-bold text-primary text-sm">7 to 14 Days</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-on-surface-variant">IP OWNERSHIP</div>
+                            <div class="font-bold text-green-700 text-sm">100% Perpetual</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-on-surface-variant">TECH STACK</div>
+                            <div class="font-bold text-primary text-sm">Flutter / Node / PG</div>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-border-subtle flex justify-end gap-3">
+                        <button onclick="closeProductModal()" class="px-5 py-2.5 rounded-full border border-border-subtle text-sm font-medium hover:bg-surface">Close</button>
+                        <a href="#contact" onclick="closeProductModal()" class="px-6 py-2.5 rounded-full bg-signal-line text-white text-sm font-semibold hover:bg-orange-600 transition-colors">Request License Demo</a>
+                    </div>
+                </div>
+            `;
+            productModal.classList.remove('hidden');
+        };
+
+        window.closeProductModal = function() {
+            document.getElementById('product-modal').classList.add('hidden');
+        };
+
+        document.getElementById('close-product-modal')?.addEventListener('click', closeProductModal);
+
+        // ATTACH CLICK HANDLERS TO PRODUCT CARDS IN PAGE-PRODUCTS
+        const productCards = document.querySelectorAll('#page-products h3');
+        productCards.forEach(h3 => {
+            const card = h3.closest('div');
+            if (card) {
+                card.classList.add('cursor-pointer');
+                card.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') return;
+                    const title = h3.textContent.strip ? h3.textContent.strip() : h3.textContent.trim();
+                    const img = card.querySelector('img');
+                    const imgUrl = img ? img.src : 'assets/images/screen_5_img_1.jpg';
+                    const descP = card.querySelector('p');
+                    const desc = descP ? descP.textContent.trim() : '';
+                    openProductModal(title, 'White-Label Product', imgUrl, desc);
+                });
+            }
+        });
+    });
+    </script>
+
+    <!-- Vercel Web Analytics -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
